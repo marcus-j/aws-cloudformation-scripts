@@ -1,0 +1,101 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Example for creating a S3 bucket and a user with access to it",
+  "Parameters": {
+    "Environment": {
+      "Default": "test",
+      "Description": "environment",
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "myBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Fn::Join": [
+            "-",
+            [
+              "my-bucket",
+              {
+                "Ref": "Environment"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "myPolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "VisualEditor0",
+              "Effect": "Allow",
+              "Action": [
+                "s3:DeleteObject",
+                "s3:GetObject",
+                "s3:PutObject"
+              ],
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:s3:::my-bucket-",
+                    {
+                      "Ref": "Environment"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "ManagedPolicyName": {
+          "Fn::Join": [
+            "-",
+            [
+              "myPolicy",
+              {
+                "Ref": "Environment"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "myUser": {
+      "Type": "AWS::IAM::User",
+      "Properties": {
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "-",
+              [
+                "arn:aws:iam::<account-id>:policy/myPolicy",
+                {
+                  "Ref": "Environment"
+                }
+              ]
+            ]
+          }
+        ],
+        "Path": "/",
+        "UserName": {
+          "Fn::Join": [
+            "-",
+            [
+              "myUser",
+              {
+                "Ref": "Environment"
+              }
+            ]
+          ]
+        }
+      }
+    }
+  }
+}
