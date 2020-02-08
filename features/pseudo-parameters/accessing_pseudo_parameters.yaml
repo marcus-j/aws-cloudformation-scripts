@@ -1,0 +1,33 @@
+  
+Resources: 
+  MyEc2Instance: 
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0233214e13e500f77 
+      Tags: # More pseudo parameters can be found at https://docs.aws.amazon.com/de_de/AWSCloudFormation/latest/UserGuide/pseudo-parameter-reference.html
+        - Key: my-region
+          Value: !Ref AWS::Region
+        - Key: my-aws-account
+          Value: !Ref AWS::AccountId
+        - Key: my-stacks-notification-arns
+          Value: !Ref AWS::NotificationARNs
+        - Key: my-stacks-id
+          Value: !Ref AWS::StackId
+        - Key: my-stacks-name
+          Value: !Ref AWS::StackName
+      SecurityGroups: 
+        - !Ref MySecurityGroup 
+  MySecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: !Join 
+            - ""
+            - - "enable SSH access on port 22 for my"
+              - !Ref AWS::StackName
+              - "stack"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0
