@@ -1,0 +1,11 @@
+Resources:
+  MyEc2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0233214e13e500f77 # Amazon Linux AMI in EU Frankfurt, HVM (SSD) EBS backed, 64 Bit
+      Tags:
+        - Key: app
+          Value: my-cool-ec2-backed-app
+        - Key: team
+          Value: my-cool-team
