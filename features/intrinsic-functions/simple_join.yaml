@@ -1,0 +1,9 @@
+Resources:
+  MyEc2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0233214e13e500f77 
+      Tags:
+        - Key: "app"
+          Value: !Join [ "-", [ my, cool, app ] ] # create "my-cool-app" value
