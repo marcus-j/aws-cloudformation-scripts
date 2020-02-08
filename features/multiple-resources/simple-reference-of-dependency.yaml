@@ -1,0 +1,20 @@
+Resources: 
+  MyEc2Instance: # the EC2 instance will be created AFTER the security group
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0233214e13e500f77 
+      Tags:
+        - Key: app
+          Value: my-cool-app
+      SecurityGroups: 
+        - !Ref MySecurityGroup # references logical name (!) of security group resource within YAML
+  MySecurityGroup: # the security group will be created BEFORE the EC2 instance
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: enable SSH access on port 22
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0
