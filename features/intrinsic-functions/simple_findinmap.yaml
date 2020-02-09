@@ -1,0 +1,16 @@
+Mappings:
+  AmiForRegion:
+    eu-central-1:
+      AMI: ami-0233214e13e500f77
+    us-west-1:
+      AMI: ami-a0cfeed8
+Resources:
+  MyEc2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: 
+        Fn::FindInMap:
+        - AmiForRegion # Map logical name
+        - !Ref AWS::Region # Key to look for, here based on a pseudo parameter
+        - AMI # attribute from map's value
