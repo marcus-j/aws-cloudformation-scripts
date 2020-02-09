@@ -1,0 +1,20 @@
+Parameters:
+  AppName:
+    Description: "The name of the app"
+    Default: "my-cool-ec2-backed-app"
+    Type: String
+  KeyName:
+    Description: "Name of a provided EC2 KeyPair"
+    Type: AWS::EC2::KeyPair::KeyName
+Resources:
+  MyEc2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0233214e13e500f77 
+      Tags:
+        - Key: app
+          Value: !Ref AppName
+        - Key: team
+          Value: my-cool-team
+      KeyName: !Ref KeyName
